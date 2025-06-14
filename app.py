@@ -5,6 +5,8 @@ import webbrowser
 from streamlit_calendar import calendar
 st.set_page_config(layout="wide")
 
+st.set_page_config(page_title="App Odontología", layout="wide")
+st.title("🦷 Dra. Jessica Mayor - Rehabilitadora Oral")
 
 # Archivos locales
 PACIENTES = "pacientes.csv"
@@ -24,8 +26,6 @@ df_evoluciones = cargar_datos(EVOLUCIONES)
 df_pagos = cargar_datos(PAGOS)
 df_citas = cargar_datos(CITAS)
 
-st.set_page_config(page_title="App Odontología", layout="wide")
-st.title("🦷 Dra. Jessica Mayor - Rehabilitadora Oral")
 
 menu = st.sidebar.selectbox("Menú", ["Registrar paciente", "Historia clínica", "Pagos", "Citas", "Recordatorios"])
 

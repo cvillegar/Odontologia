@@ -151,6 +151,7 @@ if menu == "Recordatorios":
             link = f"https://wa.me/57{numero}?text={mensaje.replace(' ', '%20')}"
             webbrowser.open_new_tab(link)
             st.success("Abriendo WhatsApp Web...")
+
 if menu == "Citas":
     st.subheader("📅 Agendar nueva cita y ver calendario")
 
@@ -249,43 +250,43 @@ if menu == "Citas":
         "slotMinTime": "07:00:00",
         "slotMaxTime": "20:00:00"
     }
-
+    from datetime import datetime  # Esto va al inicio del archivo
     returned_event = calendar(events=eventos, options=calendar_options)
-    
     if returned_event and "eventClick" in returned_event:
      evento = returned_event["eventClick"]["event"]
      props = evento.get("extendedProps", {})
-     start = evento.get("start")
+     start = evento.get("start", None)
 
-if start:
-    try:
-        start_fecha = start[:10]
-        start_hora = start[11:16]
+    if start:
+        try:
+            start_fecha = start[:10]
+            start_hora = start[11:16]
 
-        valor_total = props.get("valor_total", "N/A")
-        abono = props.get("abono", "N/A")
-        saldo = props.get("saldo", "N/A")
+            valor_total = props.get("valor_total", "N/A")
+            abono = props.get("abono", "N/A")
+            saldo = props.get("saldo", "N/A")
 
-        # Formateo si son valores numéricos válidos
-        valor_total = f"${int(valor_total):,}" if str(valor_total).isdigit() else valor_total
-        abono = f"${int(abono):,}" if str(abono).isdigit() else abono
-        saldo = f"${int(saldo):,}" if str(saldo).isdigit() else saldo
+            # Formateo si son valores numéricos válidos
+            valor_total = f"${int(valor_total):,}" if str(valor_total).isdigit() else valor_total
+            abono = f"${int(abono):,}" if str(abono).isdigit() else abono
+            saldo = f"${int(saldo):,}" if str(saldo).isdigit() else saldo
 
-        st.markdown("### 📌 Detalle de la cita seleccionada")
-        st.write(f"👤 **Paciente**: {evento['title']}")
-        st.write(f"🪪 **Cédula**: {props.get('cedula', 'N/A')}")
-        st.write(f"📋 **Motivo**: {props.get('motivo', 'N/A')}")
-        st.write(f"🗓️ **Fecha**: {start_fecha}")
-        st.write(f"🕒 **Hora**: {start_hora}")
-    except Exception as e:
-        st.error(f"❌ Error mostrando la cita: {e}")
+            st.markdown("### 📌 Detalle de la cita seleccionada")
+            st.write(f"👤 **Paciente**: {evento['title']}")
+            st.write(f"🪪 **Cédula**: {props.get('cedula', 'N/A')}")
+            st.write(f"📋 **Motivo**: {props.get('motivo', 'N/A')}")
+            st.write(f"💵 **Valor total**: {valor_total}")
+            st.write(f"💸 **Abono**: {abono}")
+            st.write(f"🧾 **Saldo pendiente**: {saldo}")
+            st.write(f"🗓️ **Fecha**: {start_fecha}")
+            st.write(f"🕒 **Hora**: {start_hora}")
+        except Exception as e:
+            st.error(f"❌ Error mostrando la cita: {e}")
     else:
-     st.info("⚠️ Seleccionaste un evento, pero no tiene campo 'start'.")
-
+        st.info("⚠️ Seleccionaste un evento, pero no tiene campo 'start'.")
 else:
     st.info("Haz clic en una cita para ver los detalles aquí.")
 
-from datetime import datetime
 
 # Asegúrate de que la columna 'fecha' esté en formato datetime
 df_citas["fecha"] = pd.to_datetime(df_citas["fecha"], errors="coerce")
@@ -293,6 +294,10 @@ df_citas["fecha"] = pd.to_datetime(df_citas["fecha"], errors="coerce")
 # Filtrar las citas con fecha mayor o igual a hoy
 hoy = datetime.today().date()
 citas_futuras = df_citas[df_citas["fecha"].dt.date >= hoy]
+
+
+
+
 
 st.markdown("### 🗑️ Eliminar citas")
 for i, row in citas_futuras.iterrows():

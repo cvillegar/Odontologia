@@ -4,9 +4,10 @@ from datetime import datetime
 import webbrowser
 from streamlit_calendar import calendar
 
+# ✅ Solo una vez y antes de todo lo demás de Streamlit
 st.set_page_config(page_title="App Odontología", layout="wide")
 
-st.set_page_config(layout="wide")
+# Continúa con el resto
 st.title("🦷 Dra. Jessica Mayor - Rehabilitadora Oral")
 
 # Archivos locales

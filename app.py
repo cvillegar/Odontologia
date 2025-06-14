@@ -3,9 +3,10 @@ import pandas as pd
 from datetime import datetime
 import webbrowser
 from streamlit_calendar import calendar
-st.set_page_config(layout="wide")
 
 st.set_page_config(page_title="App Odontología", layout="wide")
+
+st.set_page_config(layout="wide")
 st.title("🦷 Dra. Jessica Mayor - Rehabilitadora Oral")
 
 # Archivos locales
